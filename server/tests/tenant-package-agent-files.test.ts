@@ -161,6 +161,19 @@ describe("reading the agents directory from disk", () => {
       { recursive: true },
     );
     await rm(join(directory, "agents"), { recursive: true, force: true });
+    // The mounted example now has channels backed by file-based specialist agents. Keep this
+    // compatibility fixture self-contained so it still tests the legacy agents.yaml-only shape.
+    await writeFile(
+      join(directory, "channels.yaml"),
+      `channels:
+  - id: general-assistant
+    name: General Assistant
+    description: Ask for help with everyday work.
+    permitted_agents: [general-assistant]
+    allowed_groups: [all]
+`,
+      "utf8",
+    );
 
     const tenantPackage = await loadTenantPackage(directory);
 
