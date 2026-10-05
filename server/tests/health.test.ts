@@ -49,6 +49,19 @@ describe("runtime capabilities", () => {
       selfHostBanner: true,
       transcription: false,
       voice: false,
+      readiness: {
+        intelligence: true,
+        managedAgent: true,
+        computer: false,
+        routines: false,
+        toolGateway: false,
+        composio: false,
+        transcription: false,
+        voice: false,
+        handoffs: true,
+        publicCallbacks: true,
+        authentication: true,
+      },
       // Names only. The sign-in screen reads this to know which buttons to draw.
       authProviders: ["google"],
       // A boolean, not a list: naming the registered providers would tell anybody who loads the
@@ -75,12 +88,52 @@ describe("runtime capabilities", () => {
       "selfHostBanner",
       "transcription",
       "voice",
+      "readiness",
       "authProviders",
       "ssoConfigured",
       "ssoRequired",
     ]);
     // The provider list is names, never the clients and secrets behind them.
     expect(body).not.toContain("google-client-secret");
+  });
+
+  test("readiness reports configuration state without publishing configuration values", async () => {
+    const configured = createApp(
+      loadConfig(
+        testEnvironment({
+          COMPOSIO_API_KEY: "composio-private-key",
+          AGENT_TOOL_TOKEN: "tool-gateway-private-token",
+          WORKER_SHARED_SECRET: "worker-private-secret",
+          COMPUTER_SUPERVISOR_URL: "http://computer.private.example",
+          COMPUTER_TOKEN: "computer-private-token",
+          OPENBOT_PUBLIC_URL: "https://callbacks.private.example",
+        }),
+      ),
+    );
+
+    const response = await configured.request("/api/capabilities");
+    const body = await response.text();
+    const capabilities = JSON.parse(body) as {
+      readiness: Record<string, boolean>;
+    };
+
+    expect(capabilities.readiness).toMatchObject({
+      intelligence: true,
+      managedAgent: true,
+      computer: true,
+      routines: true,
+      toolGateway: true,
+      composio: true,
+      handoffs: true,
+      publicCallbacks: true,
+      authentication: true,
+    });
+    expect(body).not.toContain("composio-private-key");
+    expect(body).not.toContain("tool-gateway-private-token");
+    expect(body).not.toContain("worker-private-secret");
+    expect(body).not.toContain("computer-private-token");
+    expect(body).not.toContain("computer.private.example");
+    expect(body).not.toContain("callbacks.private.example");
   });
 
   /*
