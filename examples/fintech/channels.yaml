@@ -4,11 +4,34 @@ channels:
     description: Ask for help with everyday work.
     permitted_agents: [general-assistant]
     allowed_groups: [all]
+
+  - id: investments-and-wealth
+    name: Investments & Wealth
+    description: Discover, investigate, plan, manage and review investments and long-term wealth.
+    permitted_agents:
+      - chief-investment-officer
+      - opportunity-discovery-analyst
+      - fundamental-valuation-analyst
+      - technical-momentum-analyst
+      - quant-backtest-analyst
+      - news-earnings-catalyst-analyst
+      - forensic-governance-analyst
+      - ipo-sme-analyst
+      - portfolio-manager
+      - trade-exit-planner
+      - risk-capital-allocator
+      - wealth-planner
+      - funds-nfo-analyst
+      - high-upside-risk-hunter
+      - macro-flow-strategist
+    allowed_groups: [all]
+
   - id: risk-and-compliance
     name: Risk & Compliance
     description: Investigate policies, transaction monitoring, and control evidence.
     permitted_agents: [knowledge, risk-analyst]
     allowed_groups: [risk, compliance]
+
   - id: company-knowledge
     name: Company Knowledge
     description: Find authorized answers from company documents.
