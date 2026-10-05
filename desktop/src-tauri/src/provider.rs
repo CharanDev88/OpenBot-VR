@@ -105,6 +105,22 @@ pub fn catalogue() -> Vec<Provider> {
             caution: None,
         },
         Provider {
+            id: "ollama".into(),
+            name: "Ollama (Local)".into(),
+            summary: "Run a model on this computer with Ollama. No API key required by default.".into(),
+            logins: vec![Login::Endpoint],
+            mark: None,
+            caution: None,
+        },
+        Provider {
+            id: "vllm".into(),
+            name: "vLLM (Local)".into(),
+            summary: "Use a local or self-hosted vLLM OpenAI-compatible server.".into(),
+            logins: vec![Login::Endpoint],
+            mark: None,
+            caution: None,
+        },
+        Provider {
             id: "openai-compatible".into(),
             name: "Any OpenAI-compatible endpoint".into(),
             summary: "Azure, Bedrock, Mistral, DeepSeek, Ollama, vLLM or your own.".into(),
@@ -129,7 +145,10 @@ mod tests {
             .filter(|p| p.logins.contains(&Login::Endpoint))
             .map(|p| p.id)
             .collect();
-        assert_eq!(asking, vec!["google", "xai", "openai-compatible"]);
+        assert_eq!(
+            asking,
+            vec!["google", "xai", "ollama", "vllm", "openai-compatible"]
+        );
         for provider in catalogue()
             .into_iter()
             .filter(|provider| provider.logins.contains(&Login::Endpoint))
@@ -156,12 +175,20 @@ mod tests {
 
     /// Named providers stay ahead of the custom endpoint escape hatch.
     #[test]
-    fn four_named_providers_and_one_custom_endpoint() {
+    fn named_providers_local_runtimes_and_custom_endpoint() {
         let rows = catalogue();
         let ids: Vec<&str> = rows.iter().map(|provider| provider.id.as_str()).collect();
         assert_eq!(
             ids,
-            vec!["openai", "anthropic", "google", "xai", "openai-compatible"]
+            vec![
+                "openai",
+                "anthropic",
+                "google",
+                "xai",
+                "ollama",
+                "vllm",
+                "openai-compatible"
+            ]
         );
     }
 

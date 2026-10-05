@@ -451,6 +451,29 @@ export function createApp(
       transcription: Boolean(config.transcription),
       voice: Boolean(config.voice),
       /*
+       * Operator-facing configuration health. Booleans only: never expose keys, tokens, URLs or
+       * policy contents through this public capabilities projection.
+       */
+      readiness: {
+        intelligence: true,
+        managedAgent: Boolean(
+          config.managedAgent?.endpoint || config.managedAgent?.alsoRun,
+        ),
+        computer: Boolean(config.computer),
+        routines: Boolean(config.workerSharedSecret),
+        toolGateway: Boolean(config.agentToolToken),
+        composio: Boolean(config.composioApiKey),
+        transcription: Boolean(config.transcription),
+        voice: Boolean(config.voice),
+        handoffs:
+          config.handoff.maxDepth > 0 && config.handoff.maxPerRun > 0,
+        publicCallbacks: Boolean(config.publicUrl),
+        authentication:
+          config.singleUser ||
+          configuredAuthProviders(config.auth).length > 0 ||
+          ((await identityProviders?.list()) ?? []).length > 0,
+      },
+      /*
        * Which identity providers this deployment can sign somebody in with.
        *
        * Ids only, never the credentials: `configuredAuthProviders` returns names, and the clients
