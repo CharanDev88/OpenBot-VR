@@ -38,6 +38,25 @@ const endpointProviders: Provider[] = [
   },
 ];
 
+const localProviders: Provider[] = [
+  {
+    id: "ollama",
+    name: "Ollama (Local)",
+    summary: "Run a local model.",
+    logins: ["endpoint"],
+    mark: null,
+    caution: null,
+  },
+  {
+    id: "vllm",
+    name: "vLLM (Local)",
+    summary: "Run a local model server.",
+    logins: ["endpoint"],
+    mark: null,
+    caution: null,
+  },
+];
+
 const cloudProviders = [
   {
     id: "google",
@@ -348,6 +367,41 @@ for (const provider of providers) {
     ]);
   });
 }
+
+test("Ollama is a keyless first-class local endpoint preset", async () => {
+  const choices: unknown[] = [];
+  invokeHandler = async (command) => {
+    if (command === "providers") return localProviders;
+    throw new Error(`unexpected command ${command}`);
+  };
+
+  const view = await renderPicker((choice) => choices.push(choice));
+  await userEvent.click(
+    await view.findByRole("radio", { name: /Ollama/ }),
+  );
+
+  expect(view.getByLabelText("Base URL")).toHaveProperty(
+    "value",
+    "http://127.0.0.1:11434/v1",
+  );
+  expect(
+    view.getByLabelText("Container Base URL, if different"),
+  ).toHaveProperty("value", "http://host.docker.internal:11434/v1");
+  expect(view.queryByLabelText(/API key/i)).toBeNull();
+
+  await userEvent.type(view.getByLabelText("Model name"), "qwen3:8b");
+  await userEvent.click(view.getByRole("button", { name: "Continue" }));
+
+  expect(choices).toEqual([
+    {
+      provider: "openai-compatible",
+      login: "endpoint",
+      baseUrl: "http://127.0.0.1:11434/v1",
+      containerBaseUrl: "http://host.docker.internal:11434/v1",
+      model: "qwen3:8b",
+    },
+  ]);
+});
 
 test("a compatible endpoint does not inherit a saved OpenAI API key", async () => {
   const choices: unknown[] = [];

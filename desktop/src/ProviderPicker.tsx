@@ -501,7 +501,7 @@ export function ProviderPicker({
       {!returning && <p className="steps-of">Step 3 of 4</p>}
       <h1>{returning ? "Refresh your AI connection" : "Connect your AI"}</h1>
       <p className="lede">
-        Connect your provider with a supported plan or an API key.
+        Connect with a supported plan, an API key, or a local model runtime.
       </p>
 
       <fieldset className="picker providers">
@@ -863,8 +863,9 @@ export function ProviderPicker({
               )}
               {preset && !preset.requiresKey && (
                 <p className="footnote">
-                  The default local endpoint does not require an API key. Change the addresses above
-                  if your local runtime is exposed somewhere else.
+                  The default local endpoint does not require an API key.
+                  Change the addresses above if your local runtime is exposed
+                  somewhere else.
                 </p>
               )}
               {preset?.requiresKey && preset.keyUrl && (

@@ -1,11 +1,11 @@
 //! The model provider screen's list, as data.
 //!
 //! OpenAI and Anthropic offer plan sign-in alongside API keys. Google and xAI use named endpoint
-//! presets with API keys; their official addresses are supplied by the frontend.
+//! presets with API keys. Ollama and vLLM are named local endpoint presets with no key required by
+//! default. Their addresses are supplied by the frontend and remain editable for local setups.
 //!
-//! The row that asks for a URL is the last one, and it is the only one that asks. Keeping it there
-//! is what keeps a base URL off the main path, which the audience rule at the top of the build doc
-//! requires: somebody who has never opened a terminal finishes this screen by signing in.
+//! The generic compatible endpoint stays last. Most people can choose a named provider without
+//! knowing what an OpenAI-compatible base URL is, while advanced users retain the escape hatch.
 //!
 //! Independent of the harness picker, always. No harness on that list is tied to a vendor's models,
 //! so nothing chosen there may narrow what is offered here.
@@ -20,7 +20,7 @@ pub enum Login {
     Plan,
     /// Paste a key. Offered beside the plan, never behind it.
     ApiKey,
-    /// A base URL, a key and a model name. The developer row and the everything-else row at once.
+    /// A base URL and model name, plus a key when the endpoint requires one.
     Endpoint,
     /// Browser authorization for the provider's model API, with renewable credentials.
     Oauth,
@@ -137,7 +137,7 @@ pub fn catalogue() -> Vec<Provider> {
 mod tests {
     use super::*;
 
-    /// Named endpoint presets use API keys and never claim support for a subscription sign-in.
+    /// Endpoint presets never claim support for a subscription sign-in. Some local ones need no key.
     #[test]
     fn endpoint_providers_do_not_offer_plan_sign_in() {
         let asking: Vec<String> = catalogue()

@@ -249,15 +249,17 @@ function DeploymentHealth() {
     const controller = new AbortController();
     fetch("/api/capabilities", { signal: controller.signal })
       .then(async (response) => {
-        if (!response.ok) throw new Error(`capabilities returned ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`capabilities returned ${response.status}`);
+        }
         return (await response.json()) as { readiness?: DeploymentReadiness };
       })
       .then((capabilities) => {
         setReadiness(capabilities.readiness ?? null);
         setFailed(!capabilities.readiness);
       })
-      .catch((error) => {
-        if (error instanceof DOMException && error.name === "AbortError") return;
+      .catch(() => {
+        if (controller.signal.aborted) return;
         setFailed(true);
       });
     return () => controller.abort();
