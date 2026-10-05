@@ -834,7 +834,7 @@ test("saved endpoint key can be explicitly replaced or omitted", async () => {
 
 test("a saved keyless endpoint never requests a saved first-party key", async () => {
   invokeHandler = async (command) => {
-    if (command === "providers") return endpointProviders;
+    if (command === "providers") return [...localProviders, ...endpointProviders];
     throw new Error(`unexpected protected command ${command}`);
   };
   const user = userEvent.setup({ document });
