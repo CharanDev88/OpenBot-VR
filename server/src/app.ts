@@ -465,8 +465,7 @@ export function createApp(
         composio: Boolean(config.composioApiKey),
         transcription: Boolean(config.transcription),
         voice: Boolean(config.voice),
-        handoffs:
-          config.handoff.maxDepth > 0 && config.handoff.maxPerRun > 0,
+        handoffs: config.handoff.maxDepth > 0 && config.handoff.maxPerRun > 0,
         publicCallbacks: Boolean(config.publicUrl),
         authentication:
           config.singleUser ||

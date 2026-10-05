@@ -376,9 +376,7 @@ test("Ollama is a keyless first-class local endpoint preset", async () => {
   };
 
   const view = await renderPicker((choice) => choices.push(choice));
-  await userEvent.click(
-    await view.findByRole("radio", { name: /Ollama/ }),
-  );
+  await userEvent.click(await view.findByRole("radio", { name: /Ollama/ }));
 
   expect(view.getByLabelText("Base URL")).toHaveProperty(
     "value",

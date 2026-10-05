@@ -462,9 +462,7 @@ export function ProviderPicker({
       isHttpEndpointUrl(baseUrl) &&
       containerBaseUrlIsValid &&
       model.trim().length > 0 &&
-      (!preset?.requiresKey ||
-        apiKey.trim().length > 0 ||
-        savedEndpointKey));
+      (!preset?.requiresKey || apiKey.trim().length > 0 || savedEndpointKey));
 
   function continueWithChoice() {
     if (!row || !login || !ready) return;
@@ -863,9 +861,9 @@ export function ProviderPicker({
               )}
               {preset && !preset.requiresKey && (
                 <p className="footnote">
-                  The default local endpoint does not require an API key.
-                  Change the addresses above if your local runtime is exposed
-                  somewhere else.
+                  The default local endpoint does not require an API key. Change
+                  the addresses above if your local runtime is exposed somewhere
+                  else.
                 </p>
               )}
               {preset?.requiresKey && preset.keyUrl && (

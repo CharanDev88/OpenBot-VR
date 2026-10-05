@@ -215,7 +215,8 @@ const HEALTH_ROWS: {
   {
     key: "toolGateway",
     title: "Agent tool gateway",
-    description: "Framework agents can call governed tools back through OpenBot.",
+    description:
+      "Framework agents can call governed tools back through OpenBot.",
     setup:
       "Set AGENT_TOOL_TOKEN on the server and the managed framework agent so tool calls return through policy and audit.",
     optional: true,
@@ -265,7 +266,8 @@ const HEALTH_ROWS: {
   {
     key: "authentication",
     title: "Access control",
-    description: "Local single-user access or an identity provider is configured.",
+    description:
+      "Local single-user access or an identity provider is configured.",
     setup:
       "Use OPENBOT_SINGLE_USER=true only for local/private use, or configure Google, Microsoft, Okta, SAML or OIDC for multi-user deployments.",
     linkOptions: { to: "/admin/identity-providers" },
@@ -334,9 +336,7 @@ function DeploymentHealth() {
                   <ItemDescription>
                     {item.description}
                     {!ready && readiness !== null && !failed ? (
-                      <span className="mt-1 block">
-                        Setup: {item.setup}
-                      </span>
+                      <span className="mt-1 block">Setup: {item.setup}</span>
                     ) : null}
                   </ItemDescription>
                 </ItemContent>
