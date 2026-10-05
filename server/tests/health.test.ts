@@ -97,6 +97,28 @@ describe("runtime capabilities", () => {
     expect(body).not.toContain("google-client-secret");
   });
 
+  test("readiness counts an external organization authority as valid authentication", async () => {
+    const configured = createApp(
+      loadConfig(
+        testEnvironment({
+          GOOGLE_OAUTH_CLIENT_ID: undefined,
+          GOOGLE_OAUTH_CLIENT_SECRET: undefined,
+          BETTER_AUTH_SECRET: undefined,
+          BETTER_AUTH_URL: undefined,
+          INITIAL_ADMIN_EMAILS: undefined,
+          OPENBOT_ORGANIZATION_AUTH_URL: "https://openbot.company.example",
+        }),
+      ),
+    );
+
+    const response = await configured.request("/api/capabilities");
+    const capabilities = (await response.json()) as {
+      readiness: { authentication: boolean };
+    };
+
+    expect(capabilities.readiness.authentication).toBe(true);
+  });
+
   test("readiness reports configuration state without publishing configuration values", async () => {
     const configured = createApp(
       loadConfig(

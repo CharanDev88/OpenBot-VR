@@ -470,6 +470,7 @@ export function createApp(
         publicCallbacks: Boolean(config.publicUrl),
         authentication:
           config.singleUser ||
+          Boolean(config.organizationAuthUrl) ||
           configuredAuthProviders(config.auth).length > 0 ||
           ((await identityProviders?.list()) ?? []).length > 0,
       },
