@@ -26,6 +26,54 @@ channels:
       - macro-flow-strategist
     allowed_groups: [all]
 
+
+  - id: research-and-knowledge
+    name: Research & Knowledge
+    description: Investigate questions across public and authorized internal evidence.
+    permitted_agents:
+      - knowledge
+      - research-desk
+      - deep-researcher
+      - document-intelligence-analyst
+    allowed_groups: [all]
+
+  - id: business-and-data
+    name: Business & Data
+    description: Turn business questions, documents and data into requirements, analysis and action.
+    permitted_agents:
+      - business-analyst
+      - data-analyst
+      - document-intelligence-analyst
+      - process-automation-analyst
+    allowed_groups: [all]
+
+  - id: engineering
+    name: Engineering
+    description: Design, build, debug, test and review software and technical systems.
+    permitted_agents:
+      - software-engineer
+      - qa-test-engineer
+      - solution-architect
+    allowed_groups: [all]
+
+  - id: operations-and-supply-chain
+    name: Operations & Supply Chain
+    description: Plan and improve supply, procurement, logistics and manufacturing operations.
+    permitted_agents:
+      - supply-chain-planner
+      - procurement-sourcing-analyst
+      - logistics-network-analyst
+      - manufacturing-operations-analyst
+    allowed_groups: [all]
+
+  - id: creative-studio
+    name: Creative Studio
+    description: Develop coherent AI video productions and audience growth plans.
+    permitted_agents:
+      - ai-movie-director
+      - content-growth-strategist
+    allowed_groups: [all]
+
   - id: risk-and-compliance
     name: Risk & Compliance
     description: Investigate policies, transaction monitoring, and control evidence.
