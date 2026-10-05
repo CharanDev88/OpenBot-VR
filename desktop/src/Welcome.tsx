@@ -10,7 +10,7 @@ export function Welcome({ onStart }: { onStart: () => void }) {
     <div className="sheet">
       <div className="lockup">
         <div className="orb" aria-hidden="true" />
-        <span>OpenBot</span>
+        <span>OpenBot VR</span>
       </div>
       <h1>Your own AI coworkers, on this computer.</h1>
       <p className="lede big">
@@ -23,8 +23,8 @@ export function Welcome({ onStart }: { onStart: () => void }) {
         </button>
       </div>
       <p className="footnote">
-        Takes a few minutes. OpenBot installs what it needs first, then asks you
-        to sign in to the AI plan you already have.
+        Takes a few minutes. OpenBot VR installs what it needs first, then asks
+        you to sign in to the AI plan you already have.
       </p>
     </div>
   );

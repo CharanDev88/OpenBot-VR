@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "OpenBot",
+  "productName": "OpenBot VR",
   "version": "../../package.json",
   "identifier": "ai.copilotkit.openbot.desktop",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "OpenBot",
+        "title": "OpenBot VR",
         "width": 900,
         "height": 640,
         "minWidth": 720,
@@ -48,7 +48,7 @@
     ],
     "copyright": "CopilotKit",
     "category": "DeveloperTool",
-    "shortDescription": "Run OpenBot on your own machine",
-    "longDescription": "OpenBot Desktop installs the container engine, raises the stack, and keeps it running."
+    "shortDescription": "Run OpenBot VR on your own machine",
+    "longDescription": "OpenBot VR Desktop installs the container engine, raises the stack, and keeps it running."
   }
 }

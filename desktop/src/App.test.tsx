@@ -1545,6 +1545,22 @@ function useCompatibleEndpointSetup(
     if (command === "providers") {
       return [
         {
+          id: "ollama",
+          name: "Ollama (Local)",
+          summary: "Run a local model with Ollama.",
+          logins: ["endpoint"],
+          mark: null,
+          caution: null,
+        },
+        {
+          id: "vllm",
+          name: "vLLM (Local)",
+          summary: "Run a local model server with vLLM.",
+          logins: ["endpoint"],
+          mark: null,
+          caution: null,
+        },
+        {
           id: "openai-compatible",
           name: "OpenAI-compatible",
           summary: "Use your own endpoint.",

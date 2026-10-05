@@ -64,19 +64,42 @@ export type HeldConfiguration = {
 
 const endpointPresets: Record<
   string,
-  { baseUrl: string; model: string; keyUrl: string }
+  {
+    baseUrl: string;
+    containerBaseUrl?: string;
+    model: string;
+    keyUrl?: string;
+    requiresKey: boolean;
+    editableAddress?: boolean;
+  }
 > = {
   // https://ai.google.dev/gemini-api/docs/openai
   google: {
     baseUrl: "https://generativelanguage.googleapis.com/v1beta/openai/",
     model: "gemini-3.8-flash",
     keyUrl: "https://aistudio.google.com/apikey",
+    requiresKey: true,
   },
   // https://docs.x.ai/developers/model-capabilities/legacy/chat-completions
   xai: {
     baseUrl: "https://api.x.ai/v1",
     model: "grok-4.7",
     keyUrl: "https://console.x.ai/",
+    requiresKey: true,
+  },
+  ollama: {
+    baseUrl: "http://127.0.0.1:11434/v1",
+    containerBaseUrl: "http://host.docker.internal:11434/v1",
+    model: "",
+    requiresKey: false,
+    editableAddress: true,
+  },
+  vllm: {
+    baseUrl: "http://127.0.0.1:8000/v1",
+    containerBaseUrl: "http://host.docker.internal:8000/v1",
+    model: "",
+    requiresKey: false,
+    editableAddress: true,
   },
 };
 
@@ -439,7 +462,7 @@ export function ProviderPicker({
       isHttpEndpointUrl(baseUrl) &&
       containerBaseUrlIsValid &&
       model.trim().length > 0 &&
-      (!preset || apiKey.trim().length > 0 || savedEndpointKey));
+      (!preset?.requiresKey || apiKey.trim().length > 0 || savedEndpointKey));
 
   function continueWithChoice() {
     if (!row || !login || !ready) return;
@@ -476,7 +499,7 @@ export function ProviderPicker({
       {!returning && <p className="steps-of">Step 3 of 4</p>}
       <h1>{returning ? "Refresh your AI connection" : "Connect your AI"}</h1>
       <p className="lede">
-        Connect your provider with a supported plan or an API key.
+        Connect with a supported plan, an API key, or a local model runtime.
       </p>
 
       <fieldset className="picker providers">
@@ -529,7 +552,7 @@ export function ProviderPicker({
                   setModel(held.BOT_MODEL ?? nextPreset?.model ?? "");
                 } else {
                   setBaseUrl(nextPreset?.baseUrl ?? "");
-                  setContainerBaseUrl("");
+                  setContainerBaseUrl(nextPreset?.containerBaseUrl ?? "");
                   setModel(nextPreset?.model ?? "");
                 }
               }}
@@ -766,7 +789,7 @@ export function ProviderPicker({
                   )}
                 </p>
               )}
-              {!preset && (
+              {(!preset || preset.editableAddress) && (
                 <>
                   <div className="field">
                     <label htmlFor="base">Base URL</label>
@@ -819,22 +842,31 @@ export function ProviderPicker({
                   spellCheck={false}
                 />
               </div>
-              <div className="field">
-                <label htmlFor="ekey">
-                  {preset
-                    ? `${row.name} API key`
-                    : "API key, if the endpoint needs one"}
-                </label>
-                <input
-                  id="ekey"
-                  type="password"
-                  value={apiKey}
-                  onChange={(e) => setApiKey(e.target.value)}
-                  autoComplete="off"
-                  spellCheck={false}
-                />
-              </div>
-              {preset && (
+              {(!preset || preset.requiresKey) && (
+                <div className="field">
+                  <label htmlFor="ekey">
+                    {preset?.requiresKey
+                      ? `${row.name} API key`
+                      : "API key, if the endpoint needs one"}
+                  </label>
+                  <input
+                    id="ekey"
+                    type="password"
+                    value={apiKey}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    autoComplete="off"
+                    spellCheck={false}
+                  />
+                </div>
+              )}
+              {preset && !preset.requiresKey && (
+                <p className="footnote">
+                  The default local endpoint does not require an API key. Change
+                  the addresses above if your local runtime is exposed somewhere
+                  else.
+                </p>
+              )}
+              {preset?.requiresKey && preset.keyUrl && (
                 <p className="footnote">
                   <ExternalLink key={preset.keyUrl} href={preset.keyUrl}>
                     Get a {row.name} API key
